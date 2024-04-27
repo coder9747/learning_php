@@ -32,6 +32,36 @@ if (isset($_SESSION["username"]) && isset($_SESSION["id"])) {
     <?php } else { ?>
         <a href="./auth/signin.php">Logout</a>
     <?php } ?>
+
+    <form action="./operations/add_note.php" method="post" class="mb-3 container">
+        <label for="exampleFormControlTextarea1" class="form-label">Enter Your Note Here</label>
+        <textarea name="note" class="form-control my-2" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <div class="d-flex justify-content-center align-items-center">
+            <button class="">Add Note</button>
+        </div>
+    </form>
+    <?php
+    include("./database/connect.php");
+    $id = $_SESSION["id"];
+    $sql = "select * from notes where user_id = '$id'";
+    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+    $numrow = mysqli_num_rows($result);
+    if ($numrow > 0) {
+        while ($row = mysqli_fetch_assoc($result)) { ?>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <p class="card-text">
+                        <?php echo $row["text"] ?>
+                    </p>
+                    <a href="./operations/update.php?note_id=<?=  $row["id"] ?>" class="btn btn-primary">update </a>
+                    <a href="./operations/delete.php?note_id=<?=  $row["id"] ?>" class="btn btn-danger">Delete </a>
+                </div>
+            </div>
+
+    <?php }
+    } ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
