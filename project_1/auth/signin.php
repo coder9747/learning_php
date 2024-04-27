@@ -10,25 +10,32 @@
 
 <?php
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //getting user creditanls
+    include("../database/connect.php");
     $username = $_POST["username"];
     $password = $_POST["password"];
-    include("../database/connect.php");
-    $sql = "select * from users where username = '$username'";
-    $result = mysqli_query($conn, $sql);
-    $num_rows = mysqli_num_rows($result);
-    if ($num_rows == 0) {
-        $sql = "insert into users (username,password) values ('$username','$password')";
-        $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-        if ($result) {
-            header("location:signin.php");
+
+    $query = "select * from users where username = '$username'";
+    $result = mysqli_query($conn, $query) or die(mysqli_error($con));
+    $num = mysqli_num_rows($result);
+    if ($num) {
+        $row = mysqli_fetch_assoc($result);
+        if($row["password"]==$password)
+        {
+            session_start();
+            $_SESSION["username"] = $row["username"];
+            $_SESSION["id"] = $row["id"];
+            header("location:../index.php");
+        }
+        else
+        {
+            echo "Password is incorrect";
         }
     } else {
-        echo "user already exists";
+        echo "user not exists";
     }
 }
-
 
 ?>
 
@@ -66,14 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </div>
 
                                             <div class="pt-1 mb-4">
-                                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Create New Account</button>
+                                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Login</button>
                                             </div>
 
 
                                         </form>
-                                        <p>Already A Account <a href="./signin.php">Signup</a></p>
-
-
+                                        <p>Don't Have Account <a href="./signup.php">Signup</a></p>
                                     </div>
                                 </div>
                             </div>
