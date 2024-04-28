@@ -13,8 +13,7 @@ if (isset($_POST["submit"])) {
     if ($num == 0) {
         if ($type == "voter") {
             $adhar = $_POST["adhar"];
-            $password = $_POST["password"];
-
+            $password = $_POST["password"]; 
             $sql = "insert into user (adhar,type,password) values ('$adhar','$type','$password')";
             $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
             if ($result) {
@@ -23,6 +22,7 @@ if (isset($_POST["submit"])) {
                 echo "user not exists";
             }
         } else {
+            print_r($_FILES["photo"]);
             $file_name = $_FILES["photo"]["name"];
             $adhar = $_POST["adhar"];
             $password = $_POST["password"];
@@ -30,7 +30,7 @@ if (isset($_POST["submit"])) {
             $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
             if (in_array($file_extension, $allowed_extension)) {
                 $dir = "image/";
-                $target_file = $dir . basename($file_name);
+                $target_file = $dir . $file_name;
                 if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                     $sql = "insert into user (adhar,type,password,photo) values ('$adhar','$type','$password','$target_file')";
                     $result = mysqli_query($conn, $sql);
@@ -54,9 +54,6 @@ if (isset($_POST["submit"])) {
         echo "adhar  already exists ";
     }
 }
-
-
-
 ?>
 
 
