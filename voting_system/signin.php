@@ -17,7 +17,7 @@ if (isset($_POST["submit"])) {
             $sql = "insert into user (adhar,type,password) values ('$adhar','$type','$password')";
             $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
             if ($result) {
-                header("location:./index.php");
+                header("location:./signup.php");
             } else {
                 echo "user not exists";
             }
@@ -79,7 +79,7 @@ if (isset($_POST["submit"])) {
     <div class="mb-3 form-group select-val" class="">
 
     </div>
-    <button name="submit" type="submit" class="btn btn-primary">Login</button>
+    <button name="submit" type="submit" class="btn btn-primary">Sign Up</button>
 </form>
 <script>
     const select = document.querySelector("select");

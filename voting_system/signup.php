@@ -6,7 +6,6 @@ if (isset($_POST["submit"])) {
     include("./connect.php");
     $adhar = $_POST["adhar"];
     $password = $_POST["password"];
-
     $sql = "select * from user where adhar = '$adhar'";
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     if ($result) {
