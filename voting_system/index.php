@@ -4,10 +4,12 @@
 include("./connect.php");
 session_start();
 $voted = false;
+$voter_data = [];
 if (isset($_SESSION["id"])) {
     $id = $_SESSION["id"];
     $result = mysqli_query($conn, "select * from user where id = '$id'");
     $row = mysqli_fetch_assoc($result);
+    $voter_data = $row;
     $voted = $row["is_voted"]=="1"?true:false;
 }
 
@@ -30,7 +32,7 @@ if (isset($_SESSION["id"])) {
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <?php if(!$voted){ ?>
                     <a href="handle_vote.php?party_id=<?= $row["id"] ?>">Vote</a>
-                    <?php }else { ?>
+                    <?php }else  { ?>
                     <a <?php echo $voted?"disabled":null ?>>voted</a>
                     <?php } ?>
                 </div>
